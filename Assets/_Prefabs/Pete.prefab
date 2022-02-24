@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &397238863
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 397238864}
+  m_Layer: 0
+  m_Name: TurretSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &397238864
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 397238863}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.3, y: 0, z: 0.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5467814299791694026}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9063768369780155
 GameObject:
   m_ObjectHideFlags: 0
@@ -1572,7 +1602,7 @@ GameObject:
   - component: {fileID: 2484107694795666194}
   - component: {fileID: 236685638618034624}
   - component: {fileID: 9026434918080413346}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pete
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1592,6 +1622,7 @@ Transform:
   m_Children:
   - {fileID: 7266015289206764510}
   - {fileID: 5528118875689737488}
+  - {fileID: 397238864}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1609,6 +1640,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isJumping: 0
   isRunning: 0
+  isPlacing: 0
 --- !u!114 &4505196569997668519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1624,6 +1656,8 @@ MonoBehaviour:
   walkSpeed: 5
   runSpeed: 10
   jumpForce: 5
+  turretSpawn: {fileID: 397238864}
+  turretPrefab: {fileID: 3735646666471700113, guid: 22933dde828d490449f2301eeeeebde4, type: 3}
   followTarget: {fileID: 3038617876752101439}
   aimSensitivity: 0.5
 --- !u!95 &919132148884826063

@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: c2e72c2d4b56a6f4098405c94e59eb4a
+guid: c8feb5a58fdbb6744b07ee3d3735a709
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
   - first:
       74: -203655887218126122
-    second: run
+    second: throw
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -15,7 +15,7 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    resampleCurves: 0
+    resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
     rigImportErrors: 
@@ -35,11 +35,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: run
+      name: throw
       takeName: mixamo.com
       internalID: 0
-      firstFrame: 0
-      lastFrame: 21
+      firstFrame: 52
+      lastFrame: 146
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
