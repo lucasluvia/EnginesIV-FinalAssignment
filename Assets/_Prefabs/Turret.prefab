@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 545863425099375000}
+  - component: {fileID: 7702212904274771500}
   - component: {fileID: 1315884220695594781}
   - component: {fileID: 705906333498467153}
   - component: {fileID: 8769975591283832017}
@@ -34,6 +35,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7702212904274771500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3735646666471700113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a7f794a2d1893644b4b4dca93a1908e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turretLifetime: 20
 --- !u!114 &1315884220695594781
 MonoBehaviour:
   m_ObjectHideFlags: 0
