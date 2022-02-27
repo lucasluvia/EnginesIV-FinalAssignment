@@ -38,6 +38,10 @@ public class Inventory : MonoBehaviour
             if (itemSlots[i].itemInSlot == null)
             {
                 Debug.Log("Open Slot at slot " + i);
+                if(i == inventorySpaces - 1)
+                {
+                    isFull = true;
+                }
                 return itemSlots[i];
             }
         }

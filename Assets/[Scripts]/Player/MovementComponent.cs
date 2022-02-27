@@ -133,7 +133,7 @@ public class MovementComponent : MonoBehaviour
         highlightedPickup.GetComponent<ItemPickup>().RemovePickupFromWorld();
         inPickupRange = false;
 
-
+        inventoryManager.TempPlayerInventory.isFull = true;
 
     }
 

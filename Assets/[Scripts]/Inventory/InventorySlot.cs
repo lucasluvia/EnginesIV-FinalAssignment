@@ -12,13 +12,12 @@ public class InventorySlot : MonoBehaviour
     Inventory currentInventory;
     MovementComponent movementComponent;
 
-
     Inventory ConsoleDefaultInventoryReference;
     Inventory ConsolePlayerInventoryReference;
     Inventory ConsoleWorldInventoryReference;
     Inventory TempPlayerInventoryReference;
 
-    public TextMeshProUGUI slotText;
+    private TextMeshProUGUI slotText;
     
     void Start()
     {
@@ -31,17 +30,26 @@ public class InventorySlot : MonoBehaviour
         ConsolePlayerInventoryReference = inventoryManager.ConsolePlayerInventory;
         ConsoleWorldInventoryReference = inventoryManager.ConsoleWorldInventory;
         TempPlayerInventoryReference = inventoryManager.TempPlayerInventory;
+
+
+        slotText = transform.GetComponentInChildren<TextMeshProUGUI>();
+    }
+
+    void Update()
+    {
+        if (slotText)
+            UpdateSlotText();
     }
 
     public void MoveSlotItem()
     {
         if (itemInSlot == null) return;
 
-
-        if(parentInventoryType != InventoryType.TEMP_PLAYER && movementComponent.TempPriorityHeld)
-        {
-            MoveToTempPlayer();
-        }
+        slotPickupCategory = itemInSlot.pickupType;
+        //if(parentInventoryType != InventoryType.TEMP_PLAYER && movementComponent.TempPriorityHeld)
+        //{
+        //    MoveToTempPlayer();
+        //}
 
 
         switch (parentInventoryType)
@@ -63,7 +71,7 @@ public class InventorySlot : MonoBehaviour
                 {
                     if (slotPickupCategory == PickupCategory.PLAYER)
                         MoveToConsolePlayer();
-                    if (slotPickupCategory == PickupCategory.WORLD)
+                    else if (slotPickupCategory == PickupCategory.WORLD)
                         MoveToConsoleWorld();
                 }
                 else
@@ -71,7 +79,6 @@ public class InventorySlot : MonoBehaviour
                 break;
         }
 
-        UpdateSlotText();
         
     }
 
@@ -80,50 +87,70 @@ public class InventorySlot : MonoBehaviour
         if (ConsoleDefaultInventoryReference.isFull)
         {
             //do the win state thing/unlock door thing :)
+            Debug.Log("Didn't move " + itemInSlot.itemName + ". Default is full.");
             return;
         }
+
+        Debug.Log("Moved " + itemInSlot.itemName + " to Console Default");
+        
         InventorySlot openSlot = ConsoleDefaultInventoryReference.GetNextOpenSlot();
         openSlot.itemInSlot = itemInSlot;
         itemInSlot = null;
+
+        if (currentInventory.isFull)
+            currentInventory.isFull = false;
+
     }
 
     void MoveToConsolePlayer()
     {
         if (ConsolePlayerInventoryReference.isFull) return;
 
+        Debug.Log("Moved " + itemInSlot.itemName + " to Console Player");
+
         InventorySlot openSlot = ConsolePlayerInventoryReference.GetNextOpenSlot();
         openSlot.itemInSlot = itemInSlot;
         itemInSlot = null;
+
+        if (currentInventory.isFull)
+            currentInventory.isFull = false;
     }
     
     void MoveToConsoleWorld()
     {
         if (ConsoleWorldInventoryReference.isFull) return;
 
+        Debug.Log("Moved " + itemInSlot.itemName + " to Console World");
+
         InventorySlot openSlot = ConsoleWorldInventoryReference.GetNextOpenSlot();
         openSlot.itemInSlot = itemInSlot;
         itemInSlot = null;
+
+        if (currentInventory.isFull)
+            currentInventory.isFull = false;
+
     }
     
     void MoveToTempPlayer()
     {
         if (TempPlayerInventoryReference.isFull) return;
 
+        Debug.Log("Moved " + itemInSlot.itemName + " to Temp Player");
+
         InventorySlot openSlot = TempPlayerInventoryReference.GetNextOpenSlot();
         openSlot.itemInSlot = itemInSlot;
         itemInSlot = null;
+
+        if (currentInventory.isFull)
+            currentInventory.isFull = false;
     }
 
     void UpdateSlotText()
     {
-        if(itemInSlot == null)
-        {
+        if (itemInSlot == null)
             slotText.text = "EMPTY";
-        }
         else
-        {
             slotText.text = itemInSlot.itemName;
-        }
     }
 
 }
