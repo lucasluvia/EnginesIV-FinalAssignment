@@ -4,26 +4,43 @@ using UnityEngine;
 
 public enum InventoryType
 {
-    DEFAULT,
-    PLAYER,
-    WORLD,
-    TEMP_STORAGE
+    CONSOLE_DEFAULT,
+    CONSOLE_PLAYER,
+    CONSOLE_WORLD,
+    TEMP_PLAYER
 }
 
 public class Inventory : MonoBehaviour
 {
     public InventoryType inventoryType;
-    [SerializeField] int inventorySpaces;
+    public bool isFull;
 
-    // Start is called before the first frame update
+    [SerializeField] GameObject inventoryPanel;
+    [SerializeField] List<InventorySlot> itemSlots = new List<InventorySlot>();
+    
+    int inventorySpaces;
+    
     void Start()
     {
-        
+        inventorySpaces = inventoryPanel.transform.childCount;
+        for (int i = 0; i < inventorySpaces; i++)
+        {
+
+            itemSlots[i] = inventoryPanel.transform.GetChild(i).GetComponent<InventorySlot>();
+        }
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public InventorySlot GetNextOpenSlot()
     {
-        
+        for (int i = 0; i < inventorySpaces; i++)
+        {
+            if (itemSlots[i].itemInSlot == null)
+            {
+                return itemSlots[i];
+            }
+        }
+        Debug.Log("SHOULD NEVER GET HERE!!!!!");
+        return itemSlots[0];
     }
 }
