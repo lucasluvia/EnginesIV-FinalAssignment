@@ -6,8 +6,6 @@ TagManager:
   tags:
   - World
   - Ground
-  - Pickup
-  - Console
   layers:
   - Default
   - TransparentFX

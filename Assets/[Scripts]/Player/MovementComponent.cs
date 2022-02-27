@@ -19,23 +19,12 @@ public class MovementComponent : MonoBehaviour
     Animator playerAnimator;
     public GameObject followTarget;
 
-    public bool TempPriorityHeld;
-
-    InventoryManager inventoryManager;
-    ConsoleController consoleController;
-
     // References
     Vector2 inputVector = Vector2.zero;
     Vector3 moveDirection = Vector3.zero;
     Vector2 lookInput = Vector3.zero;
 
     public float aimSensitivity = 0.5f;
-
-    public bool InConsoleRange;
-    private bool usingConsole = false;
-
-    private bool inPickupRange;
-    private GameObject highlightedPickup;
 
     // Animator Hashes
     public readonly int movementXHash = Animator.StringToHash("MovementX");
@@ -47,14 +36,13 @@ public class MovementComponent : MonoBehaviour
     private void Awake()
     {
         playerController = GetComponent<PlayerController>();
+        rigidbody = GetComponent<Rigidbody>();
+        playerAnimator = GetComponent<Animator>();
     }
 
     void Start()
     {
-        inventoryManager = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
-        consoleController = GameObject.Find("Console").GetComponent<ConsoleController>();
-        rigidbody = GetComponent<Rigidbody>();
-        playerAnimator = GetComponent<Animator>();
+
     }
 
     void Update()
@@ -100,11 +88,7 @@ public class MovementComponent : MonoBehaviour
 
     public void OnMovement(InputValue value)
     {
-<<<<<<< HEAD
-        if (playerController.isPickingUp || usingConsole)
-=======
         if (playerController.isPlacing)
->>>>>>> parent of 7d33681 (Initial commit)
             return;
         inputVector = value.Get<Vector2>();
         playerAnimator.SetFloat(movementXHash, inputVector.x);
@@ -113,11 +97,7 @@ public class MovementComponent : MonoBehaviour
 
     public void OnRun(InputValue value)
     {
-<<<<<<< HEAD
-        if (playerController.isPickingUp || usingConsole)
-=======
         if (playerController.isPlacing)
->>>>>>> parent of 7d33681 (Initial commit)
             return;
         playerController.isRunning = value.isPressed;
         playerAnimator.SetBool(isRunningHash, playerController.isRunning);
@@ -125,11 +105,7 @@ public class MovementComponent : MonoBehaviour
 
     public void OnJump(InputValue value)
     {
-<<<<<<< HEAD
-        if (playerController.isJumping || playerController.isPickingUp || usingConsole)
-=======
         if (playerController.isJumping || playerController.isPlacing)
->>>>>>> parent of 7d33681 (Initial commit)
             return;
 
         playerController.isJumping = value.isPressed;
@@ -139,83 +115,26 @@ public class MovementComponent : MonoBehaviour
 
     public void OnLook(InputValue value)
     {
-<<<<<<< HEAD
-        if (playerController.isPickingUp || usingConsole)
-=======
         if (playerController.isPlacing)
->>>>>>> parent of 7d33681 (Initial commit)
             return;
         lookInput = value.Get<Vector2>();
     }
 
     public void OnPlace(InputValue value)
     {
-<<<<<<< HEAD
-        if (playerController.isPickingUp || !inPickupRange || inventoryManager.TempPlayerInventory.isFull || usingConsole)
-            return;
-
-        playerController.isPickingUp = value.isPressed;
-        playerAnimator.SetBool(isPickingUpHash, playerController.isPickingUp);
-        highlightedPickup.GetComponent<ItemPickup>().RemovePickupFromWorld();
-        inPickupRange = false;
-
-        inventoryManager.TempPlayerInventory.isFull = true;
-
-    }
-
-    public void OnTempInventoryPrioritize(InputValue value)
-    {
-        if (usingConsole)
-            TempPriorityHeld = value.isPressed;
-    }
-
-    public void OnTriggerConsole(InputValue value)
-    {
-        if (!InConsoleRange) return;
-
-        consoleController.ToggleConsole();
-        usingConsole = !usingConsole;
-=======
         if (playerController.isPlacing)
             return;
         playerController.isPlacing = value.isPressed;
         playerAnimator.SetBool(isPlacingHash, playerController.isPlacing);
 
         Instantiate(turretPrefab, turretSpawn.position, turretSpawn.rotation, turretParent);
->>>>>>> parent of 7d33681 (Initial commit)
     }
 
-    private void OnCollisionEnter(Collision other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (!other.gameObject.CompareTag("Ground") && !playerController.isJumping) return;
+        if (!collision.gameObject.CompareTag("Ground") && !playerController.isJumping) return;
 
         playerController.isJumping = false;
         playerAnimator.SetBool(isJumpingHash, false);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Pickup"))
-        {
-            highlightedPickup = other.gameObject;
-            inPickupRange = true;
-        }
-        if (other.gameObject.CompareTag("Console"))
-        {
-            InConsoleRange = true;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.CompareTag("Pickup"))
-        {
-            highlightedPickup = null;
-            inPickupRange = false;
-        }
-        if (other.gameObject.CompareTag("Console"))
-        {
-            InConsoleRange = false;
-        }
     }
 }

@@ -44,22 +44,6 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press"
-                },
-                {
-                    "name": "TempInventoryPrioritize",
-                    "type": "Button",
-                    "id": "914eaae8-fec0-42e0-bc1a-645e589fbce6",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Press(behavior=2)"
-                },
-                {
-                    "name": "TriggerConsole",
-                    "type": "Button",
-                    "id": "fbea1c67-48a9-4212-a939-3168335b1112",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -159,28 +143,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Place",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "7a14960b-46fa-4a63-b207-f2770c8a173f",
-                    "path": "<Keyboard>/shift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "TempInventoryPrioritize",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "39390c55-4bc1-492d-b041-087dfef5334a",
-                    "path": "<Keyboard>/tab",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "TriggerConsole",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
