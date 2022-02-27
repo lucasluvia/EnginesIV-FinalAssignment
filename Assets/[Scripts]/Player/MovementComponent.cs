@@ -9,10 +9,6 @@ public class MovementComponent : MonoBehaviour
     [SerializeField] float runSpeed = 10.0f;
     [SerializeField] float jumpForce = 5.0f;
 
-    [SerializeField] Transform turretSpawn;
-    [SerializeField] Transform turretParent;
-    [SerializeField] GameObject turretPrefab;
-
     // Components
     private PlayerController playerController;
     Rigidbody rigidbody;
@@ -31,7 +27,7 @@ public class MovementComponent : MonoBehaviour
     public readonly int movementYHash = Animator.StringToHash("MovementY");
     public readonly int isJumpingHash = Animator.StringToHash("IsJumping");
     public readonly int isRunningHash = Animator.StringToHash("IsRunning");
-    public readonly int isPlacingHash = Animator.StringToHash("IsPlacing");
+    public readonly int isPickingUpHash = Animator.StringToHash("IsPickingUp");
 
     private void Awake()
     {
@@ -73,7 +69,7 @@ public class MovementComponent : MonoBehaviour
         followTarget.transform.localEulerAngles = new Vector3(angles.x, 0, 0);
 
         //movement
-        if (playerController.isJumping || playerController.isPlacing) return;
+        if (playerController.isJumping || playerController.isPickingUp) return;
         if (!(inputVector.magnitude > 0)) moveDirection = Vector3.zero;
 
         moveDirection = transform.forward * inputVector.y + transform.right * inputVector.x;
@@ -88,7 +84,7 @@ public class MovementComponent : MonoBehaviour
 
     public void OnMovement(InputValue value)
     {
-        if (playerController.isPlacing)
+        if (playerController.isPickingUp)
             return;
         inputVector = value.Get<Vector2>();
         playerAnimator.SetFloat(movementXHash, inputVector.x);
@@ -97,7 +93,7 @@ public class MovementComponent : MonoBehaviour
 
     public void OnRun(InputValue value)
     {
-        if (playerController.isPlacing)
+        if (playerController.isPickingUp)
             return;
         playerController.isRunning = value.isPressed;
         playerAnimator.SetBool(isRunningHash, playerController.isRunning);
@@ -105,7 +101,7 @@ public class MovementComponent : MonoBehaviour
 
     public void OnJump(InputValue value)
     {
-        if (playerController.isJumping || playerController.isPlacing)
+        if (playerController.isJumping || playerController.isPickingUp)
             return;
 
         playerController.isJumping = value.isPressed;
@@ -115,19 +111,18 @@ public class MovementComponent : MonoBehaviour
 
     public void OnLook(InputValue value)
     {
-        if (playerController.isPlacing)
+        if (playerController.isPickingUp)
             return;
         lookInput = value.Get<Vector2>();
     }
 
-    public void OnPlace(InputValue value)
+    public void OnPickUp(InputValue value)
     {
-        if (playerController.isPlacing)
+        if (playerController.isPickingUp)
             return;
-        playerController.isPlacing = value.isPressed;
-        playerAnimator.SetBool(isPlacingHash, playerController.isPlacing);
+        playerController.isPickingUp = value.isPressed;
+        playerAnimator.SetBool(isPickingUpHash, playerController.isPickingUp);
 
-        Instantiate(turretPrefab, turretSpawn.position, turretSpawn.rotation, turretParent);
     }
 
     private void OnCollisionEnter(Collision collision)

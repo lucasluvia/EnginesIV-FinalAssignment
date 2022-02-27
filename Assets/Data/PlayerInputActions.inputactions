@@ -38,7 +38,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Place",
+                    "name": "PickUp",
                     "type": "Button",
                     "id": "6a88a582-5f4b-48fc-9327-25a0a4b34764",
                     "expectedControlType": "Button",
@@ -142,7 +142,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Place",
+                    "action": "PickUp",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
