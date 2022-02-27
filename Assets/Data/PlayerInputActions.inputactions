@@ -52,6 +52,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press(behavior=2)"
+                },
+                {
+                    "name": "TriggerConsole",
+                    "type": "Button",
+                    "id": "fbea1c67-48a9-4212-a939-3168335b1112",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -162,6 +170,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "TempInventoryPrioritize",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "39390c55-4bc1-492d-b041-087dfef5334a",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TriggerConsole",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

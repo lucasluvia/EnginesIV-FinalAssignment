@@ -18,6 +18,7 @@ public class MovementComponent : MonoBehaviour
     public bool TempPriorityHeld;
 
     InventoryManager inventoryManager;
+    ConsoleController consoleController;
 
     // References
     Vector2 inputVector = Vector2.zero;
@@ -25,6 +26,9 @@ public class MovementComponent : MonoBehaviour
     Vector2 lookInput = Vector3.zero;
 
     public float aimSensitivity = 0.5f;
+
+    public bool InConsoleRange;
+    private bool usingConsole = false;
 
     private bool inPickupRange;
     private GameObject highlightedPickup;
@@ -44,6 +48,7 @@ public class MovementComponent : MonoBehaviour
     void Start()
     {
         inventoryManager = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
+        consoleController = GameObject.Find("Console").GetComponent<ConsoleController>();
         rigidbody = GetComponent<Rigidbody>();
         playerAnimator = GetComponent<Animator>();
     }
@@ -91,7 +96,7 @@ public class MovementComponent : MonoBehaviour
 
     public void OnMovement(InputValue value)
     {
-        if (playerController.isPickingUp)
+        if (playerController.isPickingUp || usingConsole)
             return;
         inputVector = value.Get<Vector2>();
         playerAnimator.SetFloat(movementXHash, inputVector.x);
@@ -100,7 +105,7 @@ public class MovementComponent : MonoBehaviour
 
     public void OnRun(InputValue value)
     {
-        if (playerController.isPickingUp)
+        if (playerController.isPickingUp || usingConsole)
             return;
         playerController.isRunning = value.isPressed;
         playerAnimator.SetBool(isRunningHash, playerController.isRunning);
@@ -108,7 +113,7 @@ public class MovementComponent : MonoBehaviour
 
     public void OnJump(InputValue value)
     {
-        if (playerController.isJumping || playerController.isPickingUp)
+        if (playerController.isJumping || playerController.isPickingUp || usingConsole)
             return;
 
         playerController.isJumping = value.isPressed;
@@ -118,14 +123,14 @@ public class MovementComponent : MonoBehaviour
 
     public void OnLook(InputValue value)
     {
-        if (playerController.isPickingUp)
+        if (playerController.isPickingUp || usingConsole)
             return;
         lookInput = value.Get<Vector2>();
     }
 
     public void OnPickUp(InputValue value)
     {
-        if (playerController.isPickingUp || !inPickupRange || inventoryManager.TempPlayerInventory.isFull)
+        if (playerController.isPickingUp || !inPickupRange || inventoryManager.TempPlayerInventory.isFull || usingConsole)
             return;
 
         playerController.isPickingUp = value.isPressed;
@@ -139,7 +144,16 @@ public class MovementComponent : MonoBehaviour
 
     public void OnTempInventoryPrioritize(InputValue value)
     {
-        TempPriorityHeld = value.isPressed;
+        if (usingConsole)
+            TempPriorityHeld = value.isPressed;
+    }
+
+    public void OnTriggerConsole(InputValue value)
+    {
+        if (!InConsoleRange) return;
+
+        consoleController.ToggleConsole();
+        usingConsole = !usingConsole;
     }
 
     private void OnCollisionEnter(Collision other)
@@ -152,17 +166,27 @@ public class MovementComponent : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.gameObject.CompareTag("Pickup")) return;
-        highlightedPickup = other.gameObject;
-
-        inPickupRange = true;
+        if (other.gameObject.CompareTag("Pickup"))
+        {
+            highlightedPickup = other.gameObject;
+            inPickupRange = true;
+        }
+        if (other.gameObject.CompareTag("Console"))
+        {
+            InConsoleRange = true;
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (!other.gameObject.CompareTag("Pickup")) return;
-        highlightedPickup = null;
-
-        inPickupRange = false;
+        if (other.gameObject.CompareTag("Pickup"))
+        {
+            highlightedPickup = null;
+            inPickupRange = false;
+        }
+        if (other.gameObject.CompareTag("Console"))
+        {
+            InConsoleRange = false;
+        }
     }
 }
