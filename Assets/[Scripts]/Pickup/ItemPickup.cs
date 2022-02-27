@@ -2,26 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PickupCategory
-{
-    DEFAULT,
-    WORLD,
-    PLAYER
-}
-
-public enum PickupEffect
-{
-    NONE,
-    SPEED,
-    HIGH_JUMP,
-    STORAGE,
-    PICKUP_RADUIS
-}
-
 public class ItemPickup : MonoBehaviour
 {
-    public PickupCategory pickupType;
-    public PickupEffect pickupEffect;
+    public Item itemType;
 
     private Renderer renderer;
     private Collider collider;
@@ -41,6 +24,7 @@ public class ItemPickup : MonoBehaviour
     {
         renderer.enabled = false;
         collider.enabled = false;
+        itemType.CollectItem();
     }
-    
+
 }
