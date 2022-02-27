@@ -9,6 +9,10 @@ public class MovementComponent : MonoBehaviour
     [SerializeField] float runSpeed = 10.0f;
     [SerializeField] float jumpForce = 5.0f;
 
+    [SerializeField] Transform turretSpawn;
+    [SerializeField] Transform turretParent;
+    [SerializeField] GameObject turretPrefab;
+
     // Components
     private PlayerController playerController;
     Rigidbody rigidbody;
@@ -38,7 +42,7 @@ public class MovementComponent : MonoBehaviour
     public readonly int movementYHash = Animator.StringToHash("MovementY");
     public readonly int isJumpingHash = Animator.StringToHash("IsJumping");
     public readonly int isRunningHash = Animator.StringToHash("IsRunning");
-    public readonly int isPickingUpHash = Animator.StringToHash("IsPickingUp");
+    public readonly int isPlacingHash = Animator.StringToHash("IsPlacing");
 
     private void Awake()
     {
@@ -81,7 +85,7 @@ public class MovementComponent : MonoBehaviour
         followTarget.transform.localEulerAngles = new Vector3(angles.x, 0, 0);
 
         //movement
-        if (playerController.isJumping || playerController.isPickingUp) return;
+        if (playerController.isJumping || playerController.isPlacing) return;
         if (!(inputVector.magnitude > 0)) moveDirection = Vector3.zero;
 
         moveDirection = transform.forward * inputVector.y + transform.right * inputVector.x;
@@ -96,7 +100,11 @@ public class MovementComponent : MonoBehaviour
 
     public void OnMovement(InputValue value)
     {
+<<<<<<< HEAD
         if (playerController.isPickingUp || usingConsole)
+=======
+        if (playerController.isPlacing)
+>>>>>>> parent of 7d33681 (Initial commit)
             return;
         inputVector = value.Get<Vector2>();
         playerAnimator.SetFloat(movementXHash, inputVector.x);
@@ -105,7 +113,11 @@ public class MovementComponent : MonoBehaviour
 
     public void OnRun(InputValue value)
     {
+<<<<<<< HEAD
         if (playerController.isPickingUp || usingConsole)
+=======
+        if (playerController.isPlacing)
+>>>>>>> parent of 7d33681 (Initial commit)
             return;
         playerController.isRunning = value.isPressed;
         playerAnimator.SetBool(isRunningHash, playerController.isRunning);
@@ -113,7 +125,11 @@ public class MovementComponent : MonoBehaviour
 
     public void OnJump(InputValue value)
     {
+<<<<<<< HEAD
         if (playerController.isJumping || playerController.isPickingUp || usingConsole)
+=======
+        if (playerController.isJumping || playerController.isPlacing)
+>>>>>>> parent of 7d33681 (Initial commit)
             return;
 
         playerController.isJumping = value.isPressed;
@@ -123,13 +139,18 @@ public class MovementComponent : MonoBehaviour
 
     public void OnLook(InputValue value)
     {
+<<<<<<< HEAD
         if (playerController.isPickingUp || usingConsole)
+=======
+        if (playerController.isPlacing)
+>>>>>>> parent of 7d33681 (Initial commit)
             return;
         lookInput = value.Get<Vector2>();
     }
 
-    public void OnPickUp(InputValue value)
+    public void OnPlace(InputValue value)
     {
+<<<<<<< HEAD
         if (playerController.isPickingUp || !inPickupRange || inventoryManager.TempPlayerInventory.isFull || usingConsole)
             return;
 
@@ -154,6 +175,14 @@ public class MovementComponent : MonoBehaviour
 
         consoleController.ToggleConsole();
         usingConsole = !usingConsole;
+=======
+        if (playerController.isPlacing)
+            return;
+        playerController.isPlacing = value.isPressed;
+        playerAnimator.SetBool(isPlacingHash, playerController.isPlacing);
+
+        Instantiate(turretPrefab, turretSpawn.position, turretSpawn.rotation, turretParent);
+>>>>>>> parent of 7d33681 (Initial commit)
     }
 
     private void OnCollisionEnter(Collision other)
