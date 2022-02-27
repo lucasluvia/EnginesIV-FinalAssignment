@@ -15,6 +15,8 @@ public class MovementComponent : MonoBehaviour
     Animator playerAnimator;
     public GameObject followTarget;
 
+    InventoryManager inventoryManager;
+
     // References
     Vector2 inputVector = Vector2.zero;
     Vector3 moveDirection = Vector3.zero;
@@ -35,13 +37,13 @@ public class MovementComponent : MonoBehaviour
     private void Awake()
     {
         playerController = GetComponent<PlayerController>();
-        rigidbody = GetComponent<Rigidbody>();
-        playerAnimator = GetComponent<Animator>();
     }
 
     void Start()
     {
-
+        inventoryManager = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
+        rigidbody = GetComponent<Rigidbody>();
+        playerAnimator = GetComponent<Animator>();
     }
 
     void Update()
@@ -121,12 +123,16 @@ public class MovementComponent : MonoBehaviour
 
     public void OnPickUp(InputValue value)
     {
-        if (playerController.isPickingUp || !inPickupRange)
+        if (playerController.isPickingUp || !inPickupRange || inventoryManager.TempPlayerInventory.isFull)
             return;
+
         playerController.isPickingUp = value.isPressed;
         playerAnimator.SetBool(isPickingUpHash, playerController.isPickingUp);
         highlightedPickup.GetComponent<ItemPickup>().RemovePickupFromWorld();
         inPickupRange = false;
+
+
+
     }
 
     private void OnCollisionEnter(Collision other)

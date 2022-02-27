@@ -30,6 +30,7 @@ public class Item : ScriptableObject
     public void CollectItem()
     {
         Debug.Log("Collected the " + itemName + " PickUp: " + itemDesc + ".");
+
     }
 
 }

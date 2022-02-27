@@ -6,11 +6,13 @@ public class ItemPickup : MonoBehaviour
 {
     public Item itemType;
 
-    private Renderer renderer;
-    private Collider collider;
+    InventoryManager inventoryManager;
+    Renderer renderer;
+    Collider collider;
 
     void Start()
     {
+        inventoryManager = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
         renderer = GetComponent<Renderer>();
         collider = GetComponent<Collider>();
     }
@@ -25,6 +27,8 @@ public class ItemPickup : MonoBehaviour
         renderer.enabled = false;
         collider.enabled = false;
         itemType.CollectItem();
+        InventorySlot openSlot = inventoryManager.TempPlayerInventory.GetNextOpenSlot();
+        openSlot.itemInSlot = itemType;
     }
 
 }
