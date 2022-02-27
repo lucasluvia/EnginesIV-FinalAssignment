@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class InventorySlot : MonoBehaviour
 {
@@ -10,15 +10,20 @@ public class InventorySlot : MonoBehaviour
     PickupCategory slotPickupCategory;
     InventoryType parentInventoryType;
     Inventory currentInventory;
+    MovementComponent movementComponent;
+
 
     Inventory ConsoleDefaultInventoryReference;
     Inventory ConsolePlayerInventoryReference;
     Inventory ConsoleWorldInventoryReference;
     Inventory TempPlayerInventoryReference;
+
+    public TextMeshProUGUI slotText;
     
     void Start()
     {
         inventoryManager = GameObject.Find("InventoryManager").GetComponent<InventoryManager>();
+        movementComponent = GameObject.Find("Jackie").GetComponent<MovementComponent>();
         currentInventory = transform.parent.GetComponent<Inventory>();
         parentInventoryType = currentInventory.inventoryType;
 
@@ -28,12 +33,12 @@ public class InventorySlot : MonoBehaviour
         TempPlayerInventoryReference = inventoryManager.TempPlayerInventory;
     }
 
-    void MoveSlotItem()
+    public void MoveSlotItem()
     {
         if (itemInSlot == null) return;
 
 
-        if(parentInventoryType != InventoryType.TEMP_PLAYER && Input.GetKey(KeyCode.LeftShift))
+        if(parentInventoryType != InventoryType.TEMP_PLAYER && movementComponent.TempPriorityHeld)
         {
             MoveToTempPlayer();
         }
@@ -54,10 +59,19 @@ public class InventorySlot : MonoBehaviour
                 MoveToConsoleDefault();
                 break;
             case InventoryType.TEMP_PLAYER:
-                MoveToConsoleDefault();
+                if (movementComponent.TempPriorityHeld)
+                {
+                    if (slotPickupCategory == PickupCategory.PLAYER)
+                        MoveToConsolePlayer();
+                    if (slotPickupCategory == PickupCategory.WORLD)
+                        MoveToConsoleWorld();
+                }
+                else
+                    MoveToConsoleDefault();
                 break;
         }
 
+        UpdateSlotText();
         
     }
 
@@ -98,6 +112,18 @@ public class InventorySlot : MonoBehaviour
         InventorySlot openSlot = TempPlayerInventoryReference.GetNextOpenSlot();
         openSlot.itemInSlot = itemInSlot;
         itemInSlot = null;
+    }
+
+    void UpdateSlotText()
+    {
+        if(itemInSlot == null)
+        {
+            slotText.text = "EMPTY";
+        }
+        else
+        {
+            slotText.text = itemInSlot.itemName;
+        }
     }
 
 }

@@ -24,11 +24,12 @@ public class ItemPickup : MonoBehaviour
 
     public void RemovePickupFromWorld()
     {
+        InventorySlot openSlot = inventoryManager.TempPlayerInventory.GetNextOpenSlot();
+        openSlot.itemInSlot = itemType;
+
         renderer.enabled = false;
         collider.enabled = false;
         itemType.CollectItem();
-        InventorySlot openSlot = inventoryManager.TempPlayerInventory.GetNextOpenSlot();
-        openSlot.itemInSlot = itemType;
     }
 
 }

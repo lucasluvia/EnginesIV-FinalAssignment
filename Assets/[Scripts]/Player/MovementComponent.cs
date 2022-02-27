@@ -15,6 +15,8 @@ public class MovementComponent : MonoBehaviour
     Animator playerAnimator;
     public GameObject followTarget;
 
+    public bool TempPriorityHeld;
+
     InventoryManager inventoryManager;
 
     // References
@@ -133,6 +135,11 @@ public class MovementComponent : MonoBehaviour
 
 
 
+    }
+
+    public void OnTempInventoryPrioritize(InputValue value)
+    {
+        TempPriorityHeld = value.isPressed;
     }
 
     private void OnCollisionEnter(Collision other)

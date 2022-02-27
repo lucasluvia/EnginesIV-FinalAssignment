@@ -37,6 +37,7 @@ public class Inventory : MonoBehaviour
         {
             if (itemSlots[i].itemInSlot == null)
             {
+                Debug.Log("Open Slot at slot " + i);
                 return itemSlots[i];
             }
         }
