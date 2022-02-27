@@ -22,6 +22,9 @@ public class MovementComponent : MonoBehaviour
 
     public float aimSensitivity = 0.5f;
 
+    private bool inPickupRange;
+    private GameObject highlightedPickup;
+
     // Animator Hashes
     public readonly int movementXHash = Animator.StringToHash("MovementX");
     public readonly int movementYHash = Animator.StringToHash("MovementY");
@@ -118,18 +121,35 @@ public class MovementComponent : MonoBehaviour
 
     public void OnPickUp(InputValue value)
     {
-        if (playerController.isPickingUp)
+        if (playerController.isPickingUp || !inPickupRange)
             return;
         playerController.isPickingUp = value.isPressed;
         playerAnimator.SetBool(isPickingUpHash, playerController.isPickingUp);
-
+        highlightedPickup.GetComponent<ItemPickup>().RemovePickupFromWorld();
+        inPickupRange = false;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision other)
     {
-        if (!collision.gameObject.CompareTag("Ground") && !playerController.isJumping) return;
+        if (!other.gameObject.CompareTag("Ground") && !playerController.isJumping) return;
 
         playerController.isJumping = false;
         playerAnimator.SetBool(isJumpingHash, false);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!other.gameObject.CompareTag("Pickup")) return;
+        highlightedPickup = other.gameObject;
+
+        inPickupRange = true;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (!other.gameObject.CompareTag("Pickup")) return;
+        highlightedPickup = null;
+
+        inPickupRange = false;
     }
 }
